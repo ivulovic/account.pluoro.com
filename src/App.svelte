@@ -5,12 +5,7 @@
   import Home from "./containers/Home/Home.svelte";
   import Login from "./containers/Login.svelte";
   import Register from "./containers/Register.svelte";
-
-  const isLoggedIn = !!getCookie("TestAuthorization");
-
-  if (isLoggedIn) {
-    window.location.href = "/";
-  }
+  import { onMount } from "svelte";
 
   const base = "/account";
 
@@ -51,35 +46,35 @@
     --primary: #d21e2b;
     --text: #333;
     --background: #fff;
-    --edge: #f6f6f6;
+    --edge: #e2dddd;
     --neutral: #9c9999;
+    --link: #1a73e8;
   }
   :global(.theme-dark) {
     --primary: #d21e2b;
     --text: #fff;
     --background: #0e0e0e;
-    --edge: #444;
+    --edge: #44444494;
     --neutral: #383636;
+    --link: #1a73e8;
   }
 </style>
 
 <div id="root" class="theme-{theme}">
-  {#if !isLoggedIn}
-    <div class="base">
-      <Route>
-        <Route path={base} redirect="{base}/sign-in">
-          <Login />
-        </Route>
-        <Route path="{base}/sign-in">
-          <Login />
-        </Route>
-        <Route path="{base}/sign-up">
-          <Register />
-        </Route>
-        <Route fallback>
-          <NotFound />
-        </Route>
+  <div class="base">
+    <Route>
+      <Route path={base} redirect="{base}/sign-in">
+        <Login />
       </Route>
-    </div>
-  {/if}
+      <Route path="{base}/sign-in">
+        <Login />
+      </Route>
+      <Route path="{base}/sign-up">
+        <Register />
+      </Route>
+      <Route fallback>
+        <NotFound />
+      </Route>
+    </Route>
+  </div>
 </div>

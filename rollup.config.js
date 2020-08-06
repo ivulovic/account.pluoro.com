@@ -3,29 +3,10 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import dev from 'rollup-plugin-dev';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
-
-function serve() {
-	let server;
-
-	function toExit() {
-		if (server) server.kill(0);
-	}
-
-	return {
-		writeBundle() {
-			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
-			});
-
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
-		}
-	};
-}
 
 export default {
 	input: 'src/main.js',
@@ -57,9 +38,14 @@ export default {
 		}),
 		commonjs(),
 
-		// In dev mode, call `npm run start` once
-		// the bundle has been generated
-		!production && serve(),
+		// In dev mode, proxy requests with defined keys to other local endpoints
+		!production &&
+		dev({
+			dirs: ['public'],
+			port: 3000,
+			proxy: { '/api/*': 'http://localhost:5001/' },
+			spa: path.join('public', 'index.dev.html'),
+		}),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production

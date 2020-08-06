@@ -40,9 +40,9 @@
     transform: translateY(-50%);
     transform-origin: bottom left;
     left: var(--lebel-spacing);
-    background-color: #fff;
+    background: var(--background);
+    color: var(--text);
     padding: 0 6px;
-    color: #5f6368;
     font-size: 14px;
     transition: var(--transition);
     transition-property: transform, color;
@@ -52,14 +52,17 @@
 
   input {
     font-size: 1rem;
-    padding: 0.2rem var(--lebel-spacing);
+    padding: 1.4rem var(--lebel-spacing);
     border: none;
-    box-shadow: inset 0 0 0 1px #dadce0;
+    box-shadow: inset 0 0 0 1px var(--edge);
     border-radius: 4px;
     transition: var(--transition);
     transition-property: box-shadow;
     height: var(--input-height);
     width: 100%;
+    background: var(--background);
+    color: var(--text);
+    box-sizing: border-box;
   }
 
   .error {

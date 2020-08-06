@@ -11,7 +11,6 @@
   let password = "";
   let confirmPassword = "";
   function redirectToHome() {
-    setCookie("TestAuthorization", "simple", 8);
     window.location.href = "/";
   }
   function handleSubmit() {
@@ -55,7 +54,7 @@
   .row-two {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 35px;
+    grid-column-gap: 20px;
   }
   .text-right {
     text-align: right;

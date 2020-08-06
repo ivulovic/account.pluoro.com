@@ -14,11 +14,13 @@
 	<title>Account - Pluoro</title>
 
 	<link rel='icon' type='image/png' href='/static/favicon.ico'>
-	<link rel='stylesheet' href='/build/bundle.css'>
+	<!-- IN PRODUCTION, because of the /account sub-application, we have also a different root where app should point -->
+	<link rel='stylesheet' href='/account/build/bundle.css'>
 </head>
 
 <body>
-	<script src='/build/bundle.js'></script>
+	<!-- IN PRODUCTION, because of the /account sub-application, we have also a different root where app should point -->
+	<script src='/account/build/bundle.js'></script>
 </body>
 
 </html>

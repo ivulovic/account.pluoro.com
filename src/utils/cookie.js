@@ -1,9 +1,6 @@
 import { dateAdd } from "./date";
 
-// The parameters of the function above are the name of the cookie (cname), the value of the cookie (cvalue), and the number of days until the cookie should expire (exdays).
 function setCookie(cname, cvalue, expiresIn) {
-  // var d = new Date();
-  // d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   const d = dateAdd(new Date(), 'hour', expiresIn);
   var expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";

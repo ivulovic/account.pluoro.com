@@ -4,14 +4,21 @@
   import Button from "../components/Button.svelte";
   import Input from "../components/Input.svelte";
   import Link from "../components/Link.svelte";
+  import { onMount } from "svelte";
+  import request, { makeApiUrl, makeGetReq } from "../utils/request";
+
   let username = "";
   let password = "";
+  onMount(async () => {
+    const res = await request(makeApiUrl(`/t1`), makeGetReq());
+  });
   function redirectToHome() {
-    setCookie("TestAuthorization", "simple", 8);
     window.location.href = "/";
   }
   function handleSubmit() {
-    alert("Sign in " + username + " " + password);
+    setCookie("TestAuthorization", "simple", 8);
+    console.log("set cokkie and sign in");
+    // alert("Sign in " + username + " " + password);
   }
 </script>
 
@@ -44,7 +51,7 @@
   .row-two {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 25px;
+    grid-column-gap: 20px;
   }
 </style>
 

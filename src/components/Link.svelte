@@ -5,7 +5,7 @@
 
 <style>
   .link {
-    color: #1a73e8;
+    color: var(--link);
     cursor: pointer;
     display: inline-block;
     text-decoration: none;
@@ -18,10 +18,11 @@
     position: relative;
     transition: background 0.3s ease;
     outline: none;
+    border-radius: 4px;
   }
   .link:hover,
   .link:focus {
-    background: #f6fafe;
+    background: var(--edge);
     opacity: 1;
   }
 </style>
