@@ -5,14 +5,15 @@
 
 <style>
   .logo {
-    cursor: pointer;
     display: flex;
     flex-direction: column;
-    align-items: center;
     text-decoration: none;
+    width: 100%;
+    text-align: center;
   }
   .logo img {
-    width: 100px;
+    width: 50px;
+    margin: 0 auto;
   }
   .logo-text-primary {
     text-decoration: none;
@@ -25,16 +26,18 @@
     margin: 15px 0px 20px 0px;
   }
   .logo-text-secondary {
-    display: block;
-    color: var(--neutral);
-    margin-bottom: 15px;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.1px;
+    line-height: 1.5;
   }
 </style>
 
-<a href="/account" class="logo">
+<div class="logo">
   <img src="/static/logo.png" alt="logo" />
   <div>
     <div class="logo-text-primary">{title}</div>
     <div class="logo-text-secondary">{subtitle}</div>
   </div>
-</a>
+</div>
