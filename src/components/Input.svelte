@@ -66,9 +66,10 @@
   }
 
   .error {
-    color: red;
+    color: var(--primary);
     font-size: 12px;
     padding-top: 8px;
+    font-weight: 600;
   }
 </style>
 

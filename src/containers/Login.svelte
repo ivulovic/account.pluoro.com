@@ -5,21 +5,40 @@
   import Input from "../components/Input.svelte";
   import Link from "../components/Link.svelte";
   import { onMount } from "svelte";
-  import request, { makeApiUrl, makeGetReq } from "../utils/request";
+  import request, { makeApiUrl, makePostReq } from "../utils/request";
+  import Small from "../components/Small.svelte";
 
-  let username = "";
+  let email = "";
   let password = "";
-  onMount(async () => {
-    const res = await request(makeApiUrl(`/t1`), makeGetReq());
-  });
+  let errors = {};
+  let generalError = "";
   function redirectToHome() {
     window.location.href = "/";
   }
-  function handleSubmit() {
-    setCookie("TestAuthorization", "simple", 8);
-    console.log("set cokkie and sign in");
-    // alert("Sign in " + username + " " + password);
-  }
+  const handleSubmit = async () => {
+    if (generalError) {
+      generalError = "";
+    }
+    const fields = { email, password };
+    Object.keys(fields).forEach((key) => {
+      if (!fields[key] || (fields[key] && !fields[key].trim())) {
+        errors[key] = "This field is required";
+      } else {
+        delete errors[key];
+      }
+    });
+    if (Object.keys(errors).length === 0) {
+      try {
+        const res = await request(
+          makeApiUrl(`/account/login`),
+          makePostReq(fields)
+        );
+      } catch (error) {
+        errors = {};
+        generalError = error;
+      }
+    }
+  };
 </script>
 
 <style>
@@ -61,12 +80,13 @@
   <div class="form">
     <div>
       <Input
-        id="usernameOrEmail"
+        id="email"
         on:change={(e) => {
-          username = e.target.value;
+          email = e.target.value;
         }}
-        value={username}
-        label="Username or E-mail" />
+        value={email}
+        label="E-mail"
+        error={errors['email']} />
     </div>
     <div class="input-row">
       <Input
@@ -76,8 +96,10 @@
           password = e.target.value;
         }}
         value={password}
-        label="Password" />
+        label="Password"
+        error={errors['password']} />
     </div>
+    <Small title={generalError} type="error" />
     <div class="row-two">
       <div>
         <Link href="/account/sign-up" title="Create account" />
@@ -87,6 +109,4 @@
       </div>
     </div>
   </div>
-  <!-- <button on:click={redirectToHome}>OK</button> -->
-
 </main>

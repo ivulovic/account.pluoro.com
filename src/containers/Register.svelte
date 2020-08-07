@@ -5,28 +5,59 @@
   import Input from "../components/Input.svelte";
   import Link from "../components/Link.svelte";
   import Small from "../components/Small.svelte";
+  import request, { makePostReq, makeApiUrl } from "../utils/request";
   let firstName = "";
   let lastName = "";
   let email = "";
   let password = "";
   let confirmPassword = "";
+  let errors = {};
+  let generalError = "";
   function redirectToHome() {
     window.location.href = "/";
   }
-  function handleSubmit() {
-    alert(
-      "Sign up " +
-        firstName +
-        " " +
-        lastName +
-        " " +
-        email +
-        " " +
-        " " +
-        password +
-        " " +
-        confirmPassword
-    );
+  function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+  async function handleSubmit() {
+    if (generalError) {
+      generalError = "";
+    }
+    const fields = { firstName, lastName, email, password, confirmPassword };
+    Object.keys(fields).forEach((key) => {
+      if (!fields[key] || (fields[key] && !fields[key].trim())) {
+        errors[key] = "This field is required";
+      } else {
+        delete errors[key];
+      }
+    });
+    if (!errors["password"]) {
+      if (password !== confirmPassword) {
+        errors["password"] = "Passwords have to be the same";
+      } else {
+        delete errors.password;
+      }
+    }
+    if (!errors["email"]) {
+      if (!validateEmail(email)) {
+        errors["email"] = "Please enter valid format of E-mail";
+      } else {
+        delete errors.email;
+      }
+    }
+    if (Object.keys(errors).length === 0) {
+      try {
+        delete fields.confirmPassword;
+        const res = await request(
+          makeApiUrl(`/account/register`),
+          makePostReq(fields)
+        );
+      } catch (error) {
+        errors = {};
+        generalError = error;
+      }
+    }
   }
 </script>
 
@@ -55,6 +86,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 20px;
+    align-items: baseline;
   }
   .text-right {
     text-align: right;
@@ -73,7 +105,8 @@
             firstName = e.target.value;
           }}
           value={firstName}
-          label="First name" />
+          label="First name"
+          error={errors['firstName']} />
       </div>
       <div class="input-row">
         <Input
@@ -82,7 +115,8 @@
             lastName = e.target.value;
           }}
           value={lastName}
-          label="Last name" />
+          label="Last name"
+          error={errors['lastName']} />
       </div>
     </div>
     <div>
@@ -92,7 +126,8 @@
           email = e.target.value;
         }}
         value={email}
-        label="Your e-mail address" />
+        label="Your e-mail address"
+        error={errors['email']} />
     </div>
     <Small title="You'll need to confirm that this email belongs to you." />
     <div class="row-two">
@@ -104,7 +139,8 @@
           }}
           type="password"
           value={password}
-          label="Password" />
+          label="Password"
+          error={errors['password']} />
       </div>
       <div class="input-row">
         <Input
@@ -114,12 +150,14 @@
           }}
           type="password"
           value={confirmPassword}
-          label="Confirm" />
+          label="Confirm"
+          error={errors['confirmPassword']} />
       </div>
     </div>
     <Small
       title=" Use 8 or more characters with a mix of letters, numbers and
       symbols" />
+    <Small title={generalError} type="error" />
     <div class="row-two">
       <div>
         <Link href="/account/sign-in" title="Sign in instead" />
