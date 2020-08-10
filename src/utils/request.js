@@ -1,5 +1,5 @@
 export function makeApiUrl(endpoint) {
-  return '/api' + endpoint;
+  return '/auth' + endpoint;
 }
 
 function makeGenericReq(method, body = null) {
@@ -47,6 +47,7 @@ function checkStatus(response) {
     return response;
   }
   return response.json().catch(() => null).then(result => {
+    console.log(result);
     throw new Error(result.message)
   })
 }

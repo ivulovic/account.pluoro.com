@@ -33,6 +33,7 @@
           makeApiUrl(`/account/login`),
           makePostReq(fields)
         );
+        window.location.href = "/";
       } catch (error) {
         errors = {};
         generalError = error;

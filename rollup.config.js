@@ -43,7 +43,7 @@ export default {
 		dev({
 			dirs: ['public'],
 			port: 3000,
-			proxy: { '/api/*': 'http://localhost:5001/' },
+			proxy: { '/auth/*': 'http://localhost:5001/' },
 			spa: path.join('public', 'index.dev.html'),
 		}),
 
